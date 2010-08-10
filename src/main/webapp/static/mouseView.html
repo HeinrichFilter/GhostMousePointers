@@ -1,0 +1,39 @@
+<lift:surround with="default" at="content">
+    <lift:comet type="Mouse" name="Other">
+        <head>
+            <script type="text/javascript">
+                // <![CDATA[
+                $(document).ready(function() {
+                    $("body").mousemove(function(e){
+                // ]]>
+                        <mouse:sendCoordsToServer/>
+                // <![CDATA[
+                    });
+
+                    $(window).unload(function(){
+                // ]]>
+                        <mouse:sendUnbindEventToServer/>
+                // <![CDATA[
+                    });
+                });
+                
+                function updateOrCreateMouseDiv(uniqueId, coords) {
+                    var divId = 'mouse_' + uniqueId;
+                    var divSelector = "#" + divId;
+                    if ($(divSelector).length == 0) {
+                        console.log('createMouseDiv' + uniqueId + "  " +$(divId).length + " " + divId);
+                        $('body').append('<div id="' + divId + '">' + coords + '</div>');
+                    }
+
+                    console.log('updateMouseDiv' + uniqueId);
+                    $(divSelector).html(coords)
+
+                }
+
+                // ]]>
+            </script>
+        </head>
+        <mouse:otherPointers>No other pointers found##</mouse:otherPointers>
+
+    </lift:comet>
+</lift:surround>
