@@ -5,35 +5,50 @@
                 // <![CDATA[
                 $(document).ready(function() {
                     $("body").mousemove(function(e){
-                // ]]>
-                        <mouse:sendCoordsToServer/>
-                // <![CDATA[
+                        // ]]>
+                            <mouse:sendCoordsToServer/>
+                            // <![CDATA[
                     });
 
-                    $(window).unload(function(){
-                // ]]>
-                        <mouse:sendUnbindEventToServer/>
-                // <![CDATA[
-                    });
+                    window.onbeforeunload = function(){
+                        console.log('unload event fired');
+
+                        // ]]>
+                            <mouse:sendUnbindEventToServer/>
+                            // <![CDATA[
+                    };
                 });
                 
-                function updateOrCreateMouseDiv(uniqueId, coords) {
+                function updateOrCreateMouseDiv(uniqueId, x, y) {
                     var divId = 'mouse_' + uniqueId;
                     var divSelector = "#" + divId;
                     if ($(divSelector).length == 0) {
                         console.log('createMouseDiv' + uniqueId + "  " +$(divId).length + " " + divId);
-                        $('body').append('<div id="' + divId + '">' + coords + '</div>');
+                        $('body').append('<div id="' + divId + '" class="mouse">' + x + ',' + y +'</div>');
                     }
 
                     console.log('updateMouseDiv' + uniqueId);
-                    $(divSelector).html(coords)
+                    $(divSelector).html(x + ',' + y);
+                    $(divSelector).css({
+                       'top' : y +'px',
+                       'left' : x +'px'
+                    });
 
                 }
 
                 // ]]>
             </script>
+            <style type="text/css">
+                /* <![CDATA[ */
+                .mouse{
+                    position: absolute;
+                    background-image: url('../images/cursor.png');
+                    width: 15px;
+                    height: 22px;
+                    z-index: 100;
+                }
+                /* ]]> */
+            </style>
         </head>
-        <mouse:otherPointers>No other pointers found##</mouse:otherPointers>
-
     </lift:comet>
 </lift:surround>
